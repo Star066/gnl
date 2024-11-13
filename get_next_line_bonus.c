@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nrolland <nrolland@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 17:14:35 by nrolland          #+#    #+#             */
-/*   Updated: 2024/11/12 15:41:10 by nrolland         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:41:57 by nrolland         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -113,19 +113,19 @@ char	*ft_read(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*buf;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buffer)
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buffer)
+	if (!buffer[fd])
+		buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buffer[fd])
 		return (NULL);
-	buffer = ft_read(fd, buffer);
-	if (!buffer)
+	buffer[fd] = ft_read(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	buf = ft_before(buffer);
-	buffer = ft_after(buffer);
+	buf = ft_before(buffer[fd]);
+	buffer[fd] = ft_after(buffer[fd]);
 	return (buf);
 }
